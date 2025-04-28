@@ -1,4 +1,5 @@
 # CableCo Background and Organization
+
 CableCo is a national cable company in the United States. They offer cable television, residential and commercial internet access in 41 states, and mobile telephone service as an MVNO nationwide. CableCo has been on a multi-year journey to modernize all aspects of their operations to use cloud-native technologies. 
 
 ### Organizational Structure
@@ -7,16 +8,18 @@ CableCo has a highly capable engineering team organized in two separate organiza
 
 #### Enterprise
 
-The Enterprise team is led by CableCo's CIO. It is a traditional enterprise IT organization who manages applications for running the business. The Enterprise Application Team is aligned with business units and build and operate applications which perform a wide variety of business functions including customer care, billing, and payment processing. It is split into three organizations: (1) Enterprise Application who is responsible for in-house developed applications and custom extensions to commercial software; (2) ERP Business Systems which is responsible for configuring and maintaining commercial ERP-style applications; and (3) Enterprise Support which provides 24x7 support services for all Enterprise applications.
+The Enterprise team is led by CableCo's CIO. It is a traditional enterprise IT organization who manages applications for running the business. The Enterprise Application Team is aligned with business units and build and operate applications which perform a wide variety of business functions including customer care, billing, and payment processing. It is split into three organizations: 
 
-The Enterprise Infrastructure team is responsible for all infrastructure services for the Enterprise team. This includes cloud services, data centers, DBAs and data management, networking, and the developer experience team.
+1. **Enterprise Application Architecture** – Responsible for setting standards for how applications are built within CableCo. They publish application patterns and shared application components with the goal of minimizing the cost of application development and maximizing reuse across CableCo.
+2. **Various Development Teams** – Responsible for in-house developed applications and custom extensions to commercial software. Each team is aligned with a business unit.
+3. **ERP Business Systems** – Responsible for configuring and maintaining commercial ERP-style applications
+4. **Enterprise Support** – Responsible for providing 24x7 support services for all Enterprise applications.
 
-In the context of Radius, there are three groups which constitute the personas in Radius:
+The Enterprise Infrastructure team is responsible for all infrastructure services for the Enterprise team. This includes:
 
-1. **Developer Experience** – The platform engineering team maintains the internal developer platform, operates their CI/CD system, and other shared services for developers. 
-2. **Enterprise Cloud and Enterprise Data Center** – These are shared service teams who will manage the infrastructure environments.
-3. **Enterprise Application Architecture and Enterprise Data Services **– These are shared service teams who manage reusable application components and databases.
-4. **Development Teams** – Application developers who will use Radius resource types to build and deploy their applications.
+1. **Developer Experience** – Responsible for maintaining the internal developer platform and operating the CI/CD system.
+2. **Enterprise Cloud and Enterprise Data Center** – These two teams are responsible for managing the cloud and on-premises. The includes data center facilities, data center networking, and VMware and OpenStack-based virtual machines.
+3. **Enterprise Data Services **– This group is composed of a traditional DBA team who is responsible for the performance and operations of large databases within CableCo as well as the Data Management team which is responsible for all backup and recovery across the company.
 
 ```mermaid
 %%{ init: { 'flowchart': { 'curve': 'stepAfter' }  } }%%
@@ -28,34 +31,33 @@ flowchart LR
     CIO --- Infra[Enterprise Infrastructure]
     CIO --- App[Enterprise Applications]
     CIO --- CISO[Chief Information Security Officer]
-    App --- Dev[Enterprise Application Architecture]
-    Dev --- DevTeam1[Dev Team 1]
-    Dev --- DevTeam2[Dev Team 2]
-    Dev --- DevTeamX[Dev Team x]
-    App --- ERP[ERP Business Systems]
-		App --- Support[Enterprise Support]
     Infra --- DevX[Developer Experience]
     Infra --- Cloud[Enterprise Cloud]
     Infra --- DC[Enterprise Data Centers]
     Infra --- Data[Enterprise Data Services]
     Infra --- Net[Enterprise Networking]
+    App --- Dev[Enterprise Application Architecture]
+    App --- DevTeam1[Dev Team 1]
+    App --- DevTeam2[Dev Team 2]
+    App --- DevTeamX[Dev Team x]
+    App --- ERP[ERP Business Systems]
+		App --- Support[Enterprise Support]
   end
-  style DevX fill:#fa5252,color:#ffffff
+  style DevX fill:#ffc9c9
   style DevTeam1 fill:#a5d8ff
   style DevTeam2 fill:#a5d8ff
   style DevTeamX fill:#a5d8ff
+  style Infra fill:#ffc9c9
   style Cloud fill:#ffc9c9
   style DC fill:#ffc9c9
   style Net fill:#ffc9c9
-  style Dev fill:#b2f2bb
-  style Data fill:#b2f2bb
+  style Dev fill:#a5d8ff
+  style Data fill:#ffc9c9
 ```
 
 #### Network
 
-The Network team is a separate group who manages the entire CableCo network. This includes service provisioning, service metering, and network operations. The Network team manages hardware and software deployed in regional data centers, cloud providers, and in thousands of CableCo edge points of presence across the country. Software-defined networking applications are used to run CableCo's network. These are called network functions. Network functions can be containerized network functions (CNFs) which run on Kubernetes or virtualized network functions (VNFs) which run inside OpenStack virtual machines, but CableCo will only use Radius with the newer CNFs.
-
-The two groups who interact with Radius are the Network Engineering team who is responsible for configuring and testing containerized network functions. They will maintain the resource types for CNFs, the network test environments for CNFs. The second group is each regional network operations team who will manage the recipes for each NGCO environment and deploy the CNFs.
+The Network team is a separate group who manages the entire CableCo network. This includes service provisioning, service metering, and network operations. The Network team manages hardware and software deployed in regional data centers, cloud providers, and in thousands of CableCo edge points of presence across the country. Software-defined networking applications are used to run CableCo's network. These are called network functions. Network functions can be containerized network functions (CNFs) which run on Kubernetes or virtualized network functions (VNFs) which run inside OpenStack virtual machines.
 
 ```mermaid
 %%{ init: { 'flowchart': { 'curve': 'stepAfter' }  } }%%
@@ -108,5 +110,13 @@ Deployment types include:
 
 - **Edge** – Edge applications are to one of CableCo's 1,500 next-generation central office (NGCO) locations, which are used to operate CableCo's network as well as to provide edge compute capabilities for CableCo's businesses and customers. These are also referred to as points of presence or edge locations. For network functions, CableCo uses a blue/green deployment methodology starting with a single edge location then gradual rollout site-by-site with increasing frequency. The benefit of edge locations is that all edge applications are non-persistent. Any data they capture is shipped to a regional or national application.
 
+## Developer Platform
 
+Developers at CableCo are served today by different groups, each offering a different service.
+
+* The Developer Experience team offers a managed Kubernetes namespace as a service. For Enterprise and Maintenance applications, developers can request a Kubernetes namespace via a form. For Prime and Critical applications, the Developer Experience offers one on one consulting with development teams to meet the business-critical availability and resiliency requirements. 
+* The Developer Experience team also offers a managed CI/CD service using GitLab and ArgoCD.
+* The Enterprise Cloud team offers AWS accounts to development teams. These AWS accounts come pre-configured with IAM roles and shared VPCs with Direct Connect to the CableCo wide-area network. Developers are free to use whatever IaC solution they like but Terraform is very common in CableCo. The Developer Experience team uses this service to offer the managed Kubernetes service in AWS.
+* The Enterprise Data Center team offers virtual machines as a service to development teams using either OpenStack or VMware. The Developer Experience team uses this service to offer the managed Kubernetes service on-premises.
+* The Enterprise Data Services team is the DBA team. They offer managed Oracle, PostgreSQL, and MySQL on-premises and in AWS. These managed databases are regularly backed up, monitored, and updated. Options are available for multi-location replication for availability and resiliency. NoSQL databases are left to the development team to manage.
 
