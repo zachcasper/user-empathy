@@ -20,7 +20,7 @@ Each group needs a few roles. You will need to organize yourselves in your group
 
 * Platform engineer (everyone)
 * Developer (only one person at certain times)
-* Secretary (one person who will present your finding at the end)
+* Presenter (one person who will present your finding at the end)
 
 ## Timing
 
@@ -31,7 +31,7 @@ Each group needs a few roles. You will need to organize yourselves in your group
 | 1:30 – 3:00 PT | Breakout – Implement your PoC                                |
 | 3:00 – 3:30 PT | Plenary – Radius Customer Advisory Board                     |
 
-## Objective
+## Objectives
 
 Today's activity has two objectives:
 
@@ -40,7 +40,32 @@ Today's activity has two objectives:
 
 ## Deliverables
 
-Since you are building a proof of concept, you will not be building a full IDP. You should capture feature requests along the way which would be important if you were building a full IDP within CableCo. You will need a stack ranked list of feature requests you feel are the highest priority for CableCo after completing the proof of concept.
+There are three deliverables for this activity:
+
+### 1. Proof of concept implementation
+
+At a high level, this proof of concept will demonstrate our ability to build an application-centric internal developer platform using Radius and our existing Kubernetes and CI/CD infrastructure. The scope includes:
+
+* Installation and configuration of Radius
+* Setup of a shared environment on-premises and in AWS
+* Modeling of at least two common application resources
+* Developer documentation for the two application resources
+* Configuration of a developer workstation to deploy to shared environments
+
+Out of scope capabilities include:
+
+* Compiling the sample application and building the container image
+* Deploying the application locally
+* Configuring the CI/CD pipeline to deploy to a test environment
+* Identity and access management
+
+### 2. Deployment of a sample application 
+
+The developer in your group should radify the [WordPress and MySQLon Kubernetes sample application](https://github.com/kubernetes/examples/tree/master/mysql-wordpress-pd) and deploy it to each environment.
+
+### 3. Feedback 
+
+You should capture feature requests along the way which would be important if you were building a full IDP within CableCo. You will need a stack ranked list of feature requests you feel are the highest priority for CableCo after completing the proof of concept.
 
 At 3:00 PT, we will hold the Radius Customer Advisory Board. Your group's secretary will be expected to present five minutes on:
 
@@ -62,10 +87,28 @@ At the end of the activity, submit your feedback using this form: [Radius Custom
 
 * [CableCo Background and Organization](background.md)
   * **Tip:** This is a background document. Feel free to skim for a general understanding, but definitely study it later because this is a very real-world example of a large enterprise. There isn't anything here that you must know to complete the activity.
-* [CableCo Internal Developer Platform Requirements](requirements.md)
-* CableCo sample application
+* [CableCo IDP Proof of Concept Requirements](requirements.md)
+* [WordPress and MySQLon Kubernetes sample application](https://github.com/kubernetes/examples/tree/master/mysql-wordpress-pd) 
 * [Radius Customer Advisory Board feedback form](https://forms.office.com/r/emEQ23NuHv)
 
 ## Need Help?
 
 Ask Zach. His role today is a distinguished engineer at CableCo so he can answer any questions you have about CableCo.
+
+### Tips
+
+**Cluster Type** – There are three levels of complexity. Choose your own adventure, but just choose one: (1) local kind or k3d cluster; (2) EKS cluster; (3) EKS cluster using RDS for the database
+
+**EKS Auto** – Not recommended. For some reason, the Karpenter node provisioner is not very responsive in EKS Auto. It's usually very responsive when running on the local cluster.
+
+**StorageClass on EKS** – EKS does not have a default StorageClass so any volume you may create probably will not provision. You can set a default StorageClass with this command:
+
+```bash
+kubectl patch storageclass gp2 -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+```
+
+**EKS Pod Identity Agent** – Not recommended. This add-on is not needed for the activity and causes conflicts with the Gateway resource. The EKS Pod Identity Agent reserved the node port 80 which Contour also uses. So Contour will never get scheduled since the node port is in use on every node.
+
+## Example Solution
+
+If you want to cruise through, you can read the [example solution here](example-solution.md). But what's the fun in that?    `¯\_(ツ)_/¯`

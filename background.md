@@ -84,8 +84,6 @@ flowchart LR
   style RegionX fill:#d0bfff
 ```
 
-
-
 ## Enterprise Application Classification
 
 CableCo's enterprise application portfolio is broad and includes simple, internal HR applications, more complex ERP-style applications, and custom developers business applications. Given the breadth, CableCo classifies their enterprise applications across two dimensions: business criticality and deployment type.
@@ -120,3 +118,20 @@ Developers at CableCo are served today by different groups, each offering a diff
 * The Enterprise Data Center team offers virtual machines as a service to development teams using either OpenStack or VMware. The Developer Experience team uses this service to offer the managed Kubernetes service on-premises.
 * The Enterprise Data Services team is the DBA team. They offer managed Oracle, PostgreSQL, and MySQL on-premises and in AWS. These managed databases are regularly backed up, monitored, and updated. Options are available for multi-location replication for availability and resiliency. NoSQL databases are left to the development team to manage.
 
+## Challenges
+
+CableCo has historically not been focused on the developer experience because we have been biased towards buy over build. However, our as our business climate has evolved and our customers expect higher quality digital experiences, we are investing heavily in our internal development capability. Having a world class developer experience is critical to support this new growth.
+
+Because CableCo does not have a internal developer platform, we face the following challenges:
+
+**Developer Cognitive Load** – Because CableCo developers deploy applications on-premises and in AWS based on business requirements and cost, developers must know how to configure infrastructure. When deploying to Kubernetes, developers describe their application using Helm. But when they need a relational database, they must either work with the Enterprise Data Services team for a managed database. For other components such as a storage bucket, NoSQL database, or message queue, they can either deploy the component's containers manually using Helm or they can use an AWS service—in which case they must provision the service themselves using either Terraform or CloudFormation. 
+
+**Lack of Portability** – Because CableCo does not have an infrastructure abstraction layer aside from Kubernetes, developers are building for either AWS or the on-premises environment. While Kubernetes makes it easy to move containerized workloads, it is very difficult to move other application components. 
+
+**Lack of an On-Premises Control Plane** – While AWS provides CableCo with a control plane and API and Terraform has a wide array of providers and modules, there is no such thing on-premises. Since CableCo has a large capital investment in their data centers and thousands of edge locations, they are committed to hosting application on-premises. Aside from managed Kubernetes and managed VMs, there is no control plane which would enable offering other cloud services.
+
+**Existing Applications** – CableCo does not have a comprehensive view of where all of their applications are running and what resources they are consuming. CableCo does have a change management database (CMDB) which they use for change control, but because of its static nature, it is essentially a catalog of applications without deployment detail. Today, the CableCo CMDB has 2,000 desktop applications and 2,500 cloud and data center applications.
+
+**Engineering Consistency** – CableCo has not been able to build an engineering culture which delivers applications to the business in a consistent way. This partially due to the lack of tooling and lack of a comprehensive developer experience. This inhibits internal mobility because each team has their own way of doing things and it takes many months to ramp up on a new team. 
+
+**Scale** – CableCo operates tens of thousands of VMs in their on-premises data centers plus thousands of edge locations. Any on-premises control plane will need to operate at this scale.

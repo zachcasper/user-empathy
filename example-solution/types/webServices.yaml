@@ -1,0 +1,53 @@
+name: CableCo.App
+types:
+  webServices:
+    capabilities: ["SupportsRecipes"]
+    apiVersions:
+      '2023-10-01-preview':
+        schema: 
+          type: object
+          properties:
+            environment:
+              type: string
+              description: "Required: The Radius environment; typically set by the rad CLI"
+            application:
+              type: string
+              description: "Optional: The application which owns the resource"
+            ingress:
+              type: boolean
+              description: "Optional: When true, provisions an L7 ingress gateway mapped to the port named http"
+            container:
+              type: object
+              properties:
+                image:
+                  type: string
+                  description: "Required: The container image"
+                ports:
+                  type: object
+                  properties:
+                    containerPort:
+                      type: string
+                      description: "Required: The port the container is listening on"
+                    protocol:
+                      type: string
+                      description: "Optional: The protocol the container listening on; defaults to tcp"
+                env:
+                  type: object
+                  description: "Optional: Environment variables injected into the application container"
+                  properties:
+                    value:
+                      type: string
+              required:
+              - image
+              - ports
+            cpuRequest:
+              type: integer
+            memoryRequest:
+              type: string
+            autoScaling:
+              type: boolean
+            replicas:
+              type: integer
+          required:
+          - environment
+          - container
