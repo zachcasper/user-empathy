@@ -35,7 +35,7 @@ rad workspace create kubernetes local --context local --environment local --grou
 
 ## Step 2. Model Web Service and MySQL
 
-A web service is a long-running HTTP-based service deployed as a container. You can view the example in [webservice.yaml](example-solution/types/webservice.yaml). This resource type has a few features:
+A web service is a long-running HTTP-based service deployed as a container. You can view the example in [webservice.yaml](example-solution/types/webServices.yaml). This resource type has a few features:
 
 * It wraps the Radius Applications.Core/containers resource type into something specific for CableCo
 * It is designed in such a way to easily pass the properties from the web service to the container without having to map every property to other properties (the `container` block has the same schema for CableCo.App/webServices and Applications.Core/containers)
@@ -81,7 +81,7 @@ Then you'll need to edit your bicepconfig.json file. The file path must be the f
 
 ## Step 4. Create the Web Service Recipe
 
-The web service recipe will use multiple existing resource types. It has a container and a Gateway resource within it. We call this a composite type. Composite recipes can only be authored in Bicep today. The [webservices.bicep](example-solution/recipes/kubernetes/webservices/webservices.yaml) file is the example solution recipe.
+The web service recipe will use multiple existing resource types. It has a container and a Gateway resource within it. We call this a composite type. Composite recipes can only be authored in Bicep today. The [webservices.bicep](/example-solution/recipes/kubernetes/webservices/webservices.bicep) file is the example solution recipe.
 
 You can either publish the Bicep template to a container registry or use the example solution.
 

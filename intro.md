@@ -61,7 +61,7 @@ Out of scope capabilities include:
 
 ### 2. Deployment of a sample application 
 
-The developer in your group should radify the [WordPress and MySQLon Kubernetes sample application](https://github.com/kubernetes/examples/tree/master/mysql-wordpress-pd) and deploy it to each environment.
+The developer in your group should radify the [WordPress and MySQL on Kubernetes sample application](https://github.com/kubernetes/examples/tree/master/mysql-wordpress-pd) and deploy it to each environment.
 
 ### 3. Feedback 
 
