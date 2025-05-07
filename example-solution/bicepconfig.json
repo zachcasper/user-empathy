@@ -5,7 +5,6 @@
 	"extensions": {
 		"radius": "br:biceptypes.azurecr.io/radius:latest",
 		"aws": "br:biceptypes.azurecr.io/aws:latest",
-		"CableCoApp": "/users/zcasper/radius/aocto/demo/radius/extensions/MyCompanyApp.tgz",
-		"CableCoData": "/users/zcasper/radius/aocto/demo/radius/extensions/MyCompanyData.tgz"
+		"radiusResources": "radiusResources.tgz"
 	}
 }
